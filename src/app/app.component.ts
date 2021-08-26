@@ -14,21 +14,18 @@ import {MatDatepickerInputEvent} from '@angular/material/datepicker';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
+//for datepicker
   events: string[] = [];
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events.push(`${type}: ${event.value}`);
   }
-  searchText: string = '';
- 
-
 
   title = 'Heroes';
-
   FiltersForm!: FormGroup;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
   public dataSource = new MatTableDataSource<Ihero>();
+  //for sorting
   public dataSourcelength = 0;
   public retrivedData!: Ihero[];
   public sortedData!: Ihero[];
@@ -42,16 +39,17 @@ export class AppComponent implements OnInit {
     private HeroService: HeoresService) { }
 
   ngOnInit(): void {
- 
    this.dataSource = new MatTableDataSource<Ihero>();
     this.dataSource.sort = this.sort;
     this.initForm();
     this.getCountryList();
     this.getTableData();
   }
+//toggle filters div
   toggleFilters() {
     this.isExpanded = !this.isExpanded;
   }
+//get county list for ddl
   getCountryList() {
     this.HeroService.getCountries().subscribe(res => {
       if (res.IsSuccess) {
@@ -59,6 +57,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
+  //intiate form
   initForm() {
     this.FiltersForm = this.formBuilder.group({
       email: new FormControl(),
@@ -70,19 +69,18 @@ export class AppComponent implements OnInit {
     });
   }
 
- /**Filter function */
- applyFilter(event: Event) {
+ /**Search function */
+ applySearch(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
   this.dataSource.filter = filterValue.trim().toLowerCase();
 }
+//get table data
   getTableData() {
     this.HeroService.getHeroList().subscribe(res => {
-      debugger;
        if (res.IsSuccess) {
         this.retrivedData = res.Response as Ihero[];
         this.dataSource = new MatTableDataSource<Ihero>(this.retrivedData);
-
-        console.log(this.retrivedData);      }
+           }
     });
   }
 

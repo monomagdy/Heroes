@@ -13,3 +13,9 @@ body { margin: 0; background-color: #eceef1 }
   .mat-form-field-infix:focus-within + .mat-form-field-suffix > mat-icon {
     color: #007aff;
 }
+.mat-datepicker-content {
+    background-color: #79838d;
+}
+.mat-calendar-body-cell:hover .mat-calendar-body-cell-content, .mat-calendar-body-today {
+    background: #007bff!important;
+}

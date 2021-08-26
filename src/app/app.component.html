@@ -35,17 +35,22 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
+    <div class="form-group text-center">
+      <button class="btn btn-primary">Filter    
+           <mat-icon matSuffix aria-hidden="false" aria-label="icon">filter_list</mat-icon>
+      </button>
+    </div>
   </form>
 </div>
 <div class="float-right table-container white-bg p-0 mr-3 mt-3 mb-3" [ngClass]="{'col-12': !isExpanded,'col-9':isExpanded }">
   <div>
     <h3 class="border-right d-inline-block m-0 p-3 col-2">Heroes</h3>
     <button class="btn float-right m-2" (click)="toggleFilters()">
-      <mat-icon aria-hidden="false" aria-label="Example home icon">filter_list</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="icon">filter_list</mat-icon>
     </button>
     <mat-form-field appearance="legacy" 
     class="mt-2 border-0 col-6 float-right">
-    <input matInput class="form-control" (keyup)="applyFilter($event)" #searchInput
+    <input matInput class="form-control" (keyup)="applySearch($event)" #searchInput
         >
     <mat-icon matSuffix class="search-icon">search</mat-icon>
 </mat-form-field>
