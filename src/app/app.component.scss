@@ -1,3 +1,4 @@
+
 .table-container {
   padding: 50px;
   table {
@@ -7,7 +8,22 @@
       0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   }
 }
-
+//colors classses
+.white-bg{
+  background-color: #ffffff;
+}
+.blue-bg{
+  background-color:#007aff;
+}
+.color-blue{
+  color:#007aff;
+}
+.form-control{
+  border: 0;
+  border-bottom: 2px solid #007aff;
+  border-radius: 0;
+}
+//animation
 .fade-in {
   animation: fadeIn 1s;
   -webkit-animation: fadeIn 1s;
@@ -58,4 +74,43 @@
   100% {
     opacity: 1;
   }
+}
+
+
+
+#slider {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: blue;
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+}
+
+.slide-in {
+    animation: slide-in 0.5s forwards;
+    -webkit-animation: slide-in 0.5s forwards;
+}
+
+.slide-out {
+    animation: slide-out 0.5s forwards;
+    -webkit-animation: slide-out 0.5s forwards;
+}
+    
+@keyframes slide-in {
+    100% { transform: translateX(0%); }
+}
+
+@-webkit-keyframes slide-in {
+    100% { -webkit-transform: translateX(0%); }
+}
+    
+@keyframes slide-out {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+}
+
+@-webkit-keyframes slide-out {
+    0% { -webkit-transform: translateX(0%); }
+    100% { -webkit-transform: translateX(-100%); }
 }

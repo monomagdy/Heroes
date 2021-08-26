@@ -19,8 +19,8 @@ export interface Icountry {
 export interface IResponseModel {
     count: number;
     message: string;
-    isSucceeded: boolean;
+    IsSuccess: boolean;
     data:any;
-  dataList: object[];
+    Response: object[];
  
   }

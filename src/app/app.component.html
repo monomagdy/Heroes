@@ -1,22 +1,24 @@
-<div class="float-left filter col-4 fade-in" *ngIf="isExpanded">
+<div class="float-left filter col-3 slide-in white-bg p-4 mt-3 mb-3" *ngIf="isExpanded">
   <h1>FILTERS</h1>
   <form [formGroup]="FiltersForm" (keydown.enter)="$event.preventDefault()">
     <div class="form-group">
       <input type="text" formControlName="email" class="form-control" id="email" placeholder="Email">
     </div>
     <div class="form-group">
-      <input type="tel" formControlName="phone" class="form-control" id="phone" placeholder="Phone">
+      <input type="text" formControlName="name" class="form-control" id="name" placeholder="Name">
+
     </div>
     <div class="form-group">
-      <input type="text" formControlName="name" class="form-control" id="name" placeholder="Name">
+      <input type="tel" formControlName="phone" class="form-control" id="phone" placeholder="Phone">
+
     </div>
     <div class="form-group">
       <input type="text" formControlName="company" class="form-control" id="company" placeholder="Company">
     </div>
     <div class="form-group">
      
-      <select class="form-control " id="country" formControlName="country">
-        <option selected class="text-muted">
+      <select class="form-control " id="country" formControlName="country" title="country">
+        <option [ngValue]=null selected>
           Select Country
         </option>
         <option *ngFor="let country of countries" [ngValue]="country.Alpha3Code">
@@ -29,7 +31,7 @@
     </div>
   </form>
 </div>
-<div class="float-right table-container" [ngClass]="{'col-12': !isExpanded,'col-8':isExpanded }">
+<div class="float-right table-container white-bg p-4 mt-3 mb-3" [ngClass]="{'col-12': !isExpanded,'col-8':isExpanded }">
   <div>
     <button class="btn" (click)="toggleFilters()"><em>clickme</em></button>
   </div>

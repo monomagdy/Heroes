@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { AbstractControl, FormBuilder, FormGroup, Validators, } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from "@angular/forms";
 import { Icountry } from './interfaces';
 import { HeoresService } from './services/heoresService';
 
@@ -24,31 +24,33 @@ export class AppComponent implements OnInit {
   isExpanded: boolean = true;
   countries!: Icountry[];
   constructor(private formBuilder: FormBuilder,
-    private HeroService:HeoresService) { }
+    private HeroService: HeoresService) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.initForm();
+    this.getCountryList();
   }
   toggleFilters() {
     this.isExpanded = !this.isExpanded;
   }
-    getCountryList() {
-      this.HeroService.getCountries().subscribe(res => {
-        if (res.isSucceeded) {
-          this.countries = res.dataList as Icountry[]
-        }
-      });
+  getCountryList() {
+    this.HeroService.getCountries().subscribe(res => {
+      if (res.IsSuccess) {
+        this.countries = res.Response as Icountry[]
+        console.log(res.Response);
+      }
+    });
   }
   initForm() {
     this.FiltersForm = this.formBuilder.group({
-      email: [],
-      name: [],
-      phone: [],
-      company: [],
-      country: [],
-      date: [],
+      email: new FormControl(),
+      name: new FormControl(),
+      phone: new FormControl(),
+      company: new FormControl(),
+      country: new FormControl(),
     });
   }
 }
