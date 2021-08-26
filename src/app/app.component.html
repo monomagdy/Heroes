@@ -1,6 +1,6 @@
-<div class="float-left filter col-3 slide-in white-bg p-4 mt-3 mb-3" *ngIf="isExpanded">
-  <h1>FILTERS</h1>
-  <form [formGroup]="FiltersForm" (keydown.enter)="$event.preventDefault()">
+<div  class="float-left filter col-3 slide-in white-bg p-0 mt-3 mb-3" *ngIf="isExpanded">
+  <h1 class="p-5">FILTERS</h1>
+  <form [formGroup]="FiltersForm" (keydown.enter)="$event.preventDefault()" class="p-3">
     <div class="form-group">
       <input type="text" formControlName="email" class="form-control" id="email" placeholder="Email">
     </div>
@@ -9,7 +9,7 @@
 
     </div>
     <div class="form-group">
-      <input type="tel" formControlName="phone" class="form-control" id="phone" placeholder="Phone">
+      <input type="text" formControlName="phone" class="form-control" id="phone" placeholder="Phone">
 
     </div>
     <div class="form-group">
@@ -27,27 +27,65 @@
       </select>
     </div>
     <div class="form-group">
-
+      <mat-form-field appearance="legacy" class="d-block">
+        <input matInput [matDatepicker]="picker"  formControlName="date"
+        class="form-control"
+        (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
   </form>
 </div>
-<div class="float-right table-container white-bg p-4 mt-3 mb-3" [ngClass]="{'col-12': !isExpanded,'col-8':isExpanded }">
+<div class="float-right table-container white-bg p-0 mr-3 mt-3 mb-3" [ngClass]="{'col-12': !isExpanded,'col-9':isExpanded }">
   <div>
-    <button class="btn" (click)="toggleFilters()"><em>clickme</em></button>
+    <h3 class="border-right d-inline-block m-0 p-3 col-2">Heroes</h3>
+    <button class="btn float-right m-2" (click)="toggleFilters()">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">filter_list</mat-icon>
+    </button>
+    <mat-form-field appearance="legacy" 
+    class="mt-2 border-0 col-6 float-right">
+    <input matInput class="form-control" (keyup)="applyFilter($event)" #searchInput
+        >
+    <mat-icon matSuffix class="search-icon">search</mat-icon>
+</mat-form-field>
   </div>
-  <table mat-table [dataSource]="dataSource" matSort appNgMatTableQueryReflector>
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-    </ng-container>
+  <table mat-table [dataSource]="dataSource" matSort appNgMatTableQueryReflector class="table-bordered">
+  
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let hero"> {{hero.name}} </td>
+    </ng-container>
+     <!-- phone Column -->
+     <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+      <td mat-cell *matCellDef="let hero"> {{hero.phone}} </td>
+    </ng-container>
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let hero" class="color-link"> {{hero.email}} </td>
+      </ng-container>
+        <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let hero"> {{hero.date}} </td>
+    </ng-container>
+         <!-- Country Column -->
+         <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+          <td mat-cell *matCellDef="let hero"> {{hero.country}} </td>
+        </ng-container>
+             <!-- Company Column -->
+    <ng-container matColumnDef="company">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
+      <td mat-cell *matCellDef="let hero"> {{hero.company}} </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[10, 5, 3]" showFirstLastButtons></mat-paginator>
+ <!--
+<mat-paginator [pageSizeOptions]="[10, 5, 3]" showFirstLastButtons></mat-paginator>
+ --> 
 </div>

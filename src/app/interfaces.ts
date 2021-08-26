@@ -22,5 +22,12 @@ export interface IResponseModel {
     IsSuccess: boolean;
     data:any;
     Response: object[];
- 
+  }
+  export interface Ihero {
+    name: string;
+    phone:number;
+    email: string;
+    date:Date;
+    country:string;
+    company:string;
   }

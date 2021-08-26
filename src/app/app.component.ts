@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from "@angular/forms";
-import { Icountry } from './interfaces';
+import { Icountry, Ihero } from './interfaces';
 import { HeoresService } from './services/heoresService';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 
 @Component({
@@ -13,25 +14,40 @@ import { HeoresService } from './services/heoresService';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+
+  events: string[] = [];
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.events.push(`${type}: ${event.value}`);
+  }
+  searchText: string = '';
+ 
+
+
   title = 'Heroes';
-  @ViewChild(MatPaginator, { static: true })
-  paginator!: MatPaginator;
+
   FiltersForm!: FormGroup;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
-  displayedColumns: string[] = ['position', 'name'];
-  dataSource!: MatTableDataSource<PeriodicElement>;
+  public dataSource = new MatTableDataSource<Ihero>();
+  public dataSourcelength = 0;
+  public retrivedData!: Ihero[];
+  public sortedData!: Ihero[];
+  public sortBy!: string;
+
   isExpanded: boolean = true;
   countries!: Icountry[];
+  displayedColumns: string[] = ['name', 'phone', 'email', 'date', 'country','company'];
+
   constructor(private formBuilder: FormBuilder,
     private HeroService: HeoresService) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
+ 
+   this.dataSource = new MatTableDataSource<Ihero>();
     this.dataSource.sort = this.sort;
     this.initForm();
     this.getCountryList();
+    this.getTableData();
   }
   toggleFilters() {
     this.isExpanded = !this.isExpanded;
@@ -40,7 +56,6 @@ export class AppComponent implements OnInit {
     this.HeroService.getCountries().subscribe(res => {
       if (res.IsSuccess) {
         this.countries = res.Response as Icountry[]
-        console.log(res.Response);
       }
     });
   }
@@ -51,22 +66,26 @@ export class AppComponent implements OnInit {
       phone: new FormControl(),
       company: new FormControl(),
       country: new FormControl(),
+      date: new FormControl(),
     });
   }
+
+ /**Filter function */
+ applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.dataSource.filter = filterValue.trim().toLowerCase();
 }
-export interface PeriodicElement {
-  name: string;
-  position: number;
+  getTableData() {
+    this.HeroService.getHeroList().subscribe(res => {
+      debugger;
+       if (res.IsSuccess) {
+        this.retrivedData = res.Response as Ihero[];
+        this.dataSource = new MatTableDataSource<Ihero>(this.retrivedData);
+
+        console.log(this.retrivedData);      }
+    });
+  }
+
+
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen' },
-  { position: 2, name: 'Helium' },
-  { position: 3, name: 'Lithium' },
-  { position: 4, name: 'Beryllium' },
-  { position: 5, name: 'Boron' },
-  { position: 6, name: 'Carbon' },
-  { position: 7, name: 'Nitrogen' },
-  { position: 8, name: 'Oxygen' },
-  { position: 9, name: 'Fluorine' },
-  { position: 10, name: 'Neon' }
-];
+

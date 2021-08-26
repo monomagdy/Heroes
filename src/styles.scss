@@ -1,4 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #eceef1 }
+body { margin: 0; background-color: #eceef1 }
+.mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: 0 !important;
+    border: 0 !important;
+  }
+   .mat-form-field-underline{
+    display: none!important;
+    height: 0!important;
+  }
+  .mat-form-field-infix:focus-within + .mat-form-field-suffix > mat-icon {
+    color: #007aff;
+}
