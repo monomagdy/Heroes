@@ -1,13 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from "@angular/forms";
 import { Icountry, Ihero } from './interfaces';
 import { HeoresService } from './services/heoresService';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
-
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +14,6 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 })
 export class AppComponent implements OnInit {
-  //for datepicker
-  events: string[] = [];
-  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    this.events.push(`${type}: ${event.value}`);
-  }
-
   title = 'Heroes';
   FiltersForm!: FormGroup;
   @ViewChild(MatSort, { static: true })
@@ -33,18 +25,20 @@ export class AppComponent implements OnInit {
   isExpanded: boolean = true;
   countries!: Icountry[];
   displayedColumns: string[] = ['name', 'phone', 'email', 'date', 'country', 'company'];
+  nameStr: string = '';
 
   constructor(private formBuilder: FormBuilder,
-    private HeroService: HeoresService) { }
+    private HeroService: HeoresService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Ihero>();
     this.initForm();
     this.getCountryList();
     this.getTableData();
-
-
   }
+
   //toggle filters div
   toggleFilters() {
     this.isExpanded = !this.isExpanded;
@@ -73,12 +67,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  /**Search function */
-  applySearch(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   //get table data
   getTableData() {
     this.HeroService.getHeroList().subscribe(res => {
@@ -95,16 +83,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-//Filter section
-ngAfterViewInit() {
- 
-}
-FilterbyName(){
-  this.dataSource.filterPredicate = function(data, filter: string): boolean {
-    return (
-      data.name.toString().includes(filter) 
-    );
-  };
-}
+ //Search function 
+  applySearch(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  filterClicked(){
+    var formValue = this.FiltersForm.value;
+  console.log(formValue);
+  }
+
 }
 
