@@ -8,10 +8,12 @@ import { HeoresService } from './services/heoresService';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+
 })
 export class AppComponent implements OnInit {
   //for datepicker
@@ -37,7 +39,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Ihero>();
-    //this.dataSource.sort = this.sort;
     this.initForm();
     this.getCountryList();
     this.getTableData();
@@ -60,13 +61,15 @@ export class AppComponent implements OnInit {
 
   //intiate form
   initForm() {
+    const EmailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+    const PhonePattern = '[- +()0-9]+';
     this.FiltersForm = this.formBuilder.group({
-      email: new FormControl(),
-      name: new FormControl(),
-      phone: new FormControl(),
-      company: new FormControl(),
-      country: new FormControl(),
-      date: new FormControl(),
+      email: ['', [ Validators.pattern(EmailPattern)]],
+      name: [''],
+      phone:['', [Validators.pattern(PhonePattern)]],
+      company: [''],
+      country: [null],
+      date:  [''],
     });
   }
 
@@ -92,6 +95,16 @@ export class AppComponent implements OnInit {
     });
   }
 
-
+//Filter section
+ngAfterViewInit() {
+ 
+}
+FilterbyName(){
+  this.dataSource.filterPredicate = function(data, filter: string): boolean {
+    return (
+      data.name.toString().includes(filter) 
+    );
+  };
+}
 }
 

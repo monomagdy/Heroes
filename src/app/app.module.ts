@@ -11,11 +11,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgMatTableQueryReflectorDirective } from './directives/ng-mat-table-query-reflector.directive';
 import { HttpClientModule } from '@angular/common/http';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
@@ -26,7 +26,7 @@ import { MatNativeDateModule } from '@angular/material/core';
   ],
   imports: [
     BrowserModule,
-   HttpClientModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -42,9 +42,11 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+
 
   ],
-  providers: [],  bootstrap: [AppComponent]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+  ], bootstrap: [AppComponent]
 })
 export class AppModule { }
