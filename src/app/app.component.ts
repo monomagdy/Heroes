@@ -25,12 +25,21 @@ export class AppComponent implements OnInit {
   isExpanded: boolean = true;
   countries!: Icountry[];
   displayedColumns: string[] = ['name', 'phone', 'email', 'date', 'country', 'company'];
-  nameStr: string = '';
-
+  filterValues = {
+    name: '',
+    phone: '',
+    email: '',
+    date: '',
+    country: '',
+    company: ''
+  };
   constructor(private formBuilder: FormBuilder,
     private HeroService: HeoresService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute) {
+
+
+  }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Ihero>();
@@ -38,6 +47,7 @@ export class AppComponent implements OnInit {
     this.getCountryList();
     this.getTableData();
   }
+
 
   //toggle filters div
   toggleFilters() {
@@ -57,14 +67,18 @@ export class AppComponent implements OnInit {
   initForm() {
     const EmailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
     const PhonePattern = '[- +()0-9]+';
-    this.FiltersForm = this.formBuilder.group({
-      email: ['', [Validators.pattern(EmailPattern)]],
-      name: [''],
-      phone: ['', [Validators.pattern(PhonePattern)]],
-      company: [''],
-      country: [null],
-      date: [''],
-    });
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      const queryExist = queryParams && Object.keys(queryParams).length;
+      this.FiltersForm = this.formBuilder.group({
+        email: [queryExist ? queryParams.email : '', [Validators.pattern(EmailPattern)]],
+        name: [queryExist ? queryParams.name : ''],
+        phone: [queryExist ? queryParams.phone : '', [Validators.pattern(PhonePattern)]],
+        company: [queryExist ? queryParams.company : ''],
+        country: [queryExist ? queryParams.country : null],
+        date: [queryExist ? queryParams.date : ''],
+      });
+
+    })
   }
 
   //get table data
@@ -89,39 +103,59 @@ export class AppComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  resetForm(){
+  resetForm() {
     this.FiltersForm.reset();
     this.getTableData();
+    this.router.navigateByUrl('');
 
   }
 
-  FilterbyName(){
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-      return (
-        data.name.toString().includes(filter) 
-      );
-    };
-  }
-  filterClicked() {
-   if (this.FiltersForm.controls.name.value!=null){
+
+  applyFilters() {
+
+    if (this.FiltersForm.value != null) {
+   
       this.router.navigate(
         ['filter/'],
-        { queryParams: { name: this.FiltersForm.controls.name.value }, queryParamsHandling: 'merge' },
-        )
-        const filterValue = this.FiltersForm.controls.name.value 
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-     
-    /* var formValue = this.FiltersForm.value;
-    var formValueJSON = JSON.stringify(formValue);
-    this.router.navigate(
-      ['filter/'],
-      { queryParams: { name: formValueJSON }, queryParamsHandling: 'merge' },
-    )
-    const filterValue = formValueJSON;
-    
-    this.dataSource.filter = filterValue.trim().toLowerCase();*/
-  }
+        { queryParams: { ...this.FiltersForm.value }, queryParamsHandling: 'merge' },
+      )
+      this.filterValues['name'] = this.FiltersForm.controls.name.value;
+      this.filterValues['phone'] = this.FiltersForm.controls.phone.value;
+      this.filterValues['email'] = this.FiltersForm.controls.email.value;
+      this.filterValues['date'] = this.FiltersForm.controls.date.value;
+      this.filterValues['country'] = this.FiltersForm.controls.country.value;
+      this.filterValues['company'] = this.FiltersForm.controls.company.value;
 
+     //this.dataSource.filter = JSON.stringify(this.filterValues);
+
+     //this.dataSource.filterPredicate = this.customFilterPredicate();
+
+      // var formValue = this.FiltersForm.value;
+      //var formValueJSON = JSON.stringify(formValue);
+      //const filterValue = this.FiltersForm.controls.phone.value;
+      this.dataSource.filter = this.filterValues['name'].trim().toLowerCase();
+      this.dataSource.filter =  this.filterValues['name'];
+
+     this.dataSource.filter = this.filterValues['phone'];
+      this.dataSource.filter =  this.filterValues['phone'];
+
+  
+
+      
+    }
+
+
+  }
+  /*customFilterPredicate() {
+    const myFilterPredicate = function (data: Ihero, filter: string): boolean {
+      let searchString = JSON.parse(filter);
+      return data.phone.toString().trim().indexOf(searchString.phone) !== -1 &&
+        data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1
+        ;
+    }
+    return myFilterPredicate;
+  }*/
 }
+
+
 

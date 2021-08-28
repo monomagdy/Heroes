@@ -42,7 +42,7 @@
       </mat-form-field>
     </div>
     <div class="form-group text-center">
-      <button class="btn btn-primary pl-2 pr-4" (click)="filterClicked()">Filter
+      <button class="btn btn-primary pl-2 pr-4" (click)="applyFilters()">Filter
         <mat-icon matSuffix aria-hidden="false" aria-label="icon" class="float-left ml-2 mr-2">filter_list</mat-icon>
       </button>
      
@@ -64,6 +64,7 @@
   <div *ngIf="dataSource.filteredData.length===0" class="text-center m-5">
     <mat-icon class="d-block m-auto text-warning h1">report</mat-icon>
     <h3 class="mt-4">Sorry! there's no data matching your filters.</h3>
+    <button (click)="resetForm()" class="color-link btn">Back</button>
   </div>
   <table mat-table [dataSource]="dataSource" matSort appNgMatTableQueryReflector class="table-bordered" 
   [hidden]="dataSource.filteredData.length === 0">
