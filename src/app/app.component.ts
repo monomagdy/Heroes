@@ -128,7 +128,7 @@ export class AppComponent implements OnInit {
       this.filterValues['company'] = this.FiltersForm.controls.company.value;
 
       this.dataSource.filter = JSON.stringify(this.filterValues)
-      const filterValue = this.FiltersForm.controls.phone.value;
+      const filterValue = this.FiltersForm.controls.name.value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
 
 
