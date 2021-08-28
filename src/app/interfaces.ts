@@ -25,7 +25,7 @@ export interface IResponseModel {
   }
   export interface Ihero {
     name: string;
-    phone:number;
+    phone:string;
     email: string;
     date:Date;
     country:string;

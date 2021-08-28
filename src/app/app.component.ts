@@ -114,11 +114,12 @@ export class AppComponent implements OnInit {
   applyFilters() {
 
     if (this.FiltersForm.value != null) {
-   
+
       this.router.navigate(
         ['filter/'],
         { queryParams: { ...this.FiltersForm.value }, queryParamsHandling: 'merge' },
       )
+
       this.filterValues['name'] = this.FiltersForm.controls.name.value;
       this.filterValues['phone'] = this.FiltersForm.controls.phone.value;
       this.filterValues['email'] = this.FiltersForm.controls.email.value;
@@ -126,36 +127,19 @@ export class AppComponent implements OnInit {
       this.filterValues['country'] = this.FiltersForm.controls.country.value;
       this.filterValues['company'] = this.FiltersForm.controls.company.value;
 
-     //this.dataSource.filter = JSON.stringify(this.filterValues);
+      this.dataSource.filter = JSON.stringify(this.filterValues)
+      const filterValue = this.FiltersForm.controls.phone.value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
 
-     //this.dataSource.filterPredicate = this.customFilterPredicate();
 
-      // var formValue = this.FiltersForm.value;
-      //var formValueJSON = JSON.stringify(formValue);
-      //const filterValue = this.FiltersForm.controls.phone.value;
-      this.dataSource.filter = this.filterValues['name'].trim().toLowerCase();
-      this.dataSource.filter =  this.filterValues['name'];
 
-     this.dataSource.filter = this.filterValues['phone'];
-      this.dataSource.filter =  this.filterValues['phone'];
 
-  
-
-      
     }
 
 
   }
-  /*customFilterPredicate() {
-    const myFilterPredicate = function (data: Ihero, filter: string): boolean {
-      let searchString = JSON.parse(filter);
-      return data.phone.toString().trim().indexOf(searchString.phone) !== -1 &&
-        data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1
-        ;
-    }
-    return myFilterPredicate;
-  }*/
 }
+
 
 
 
