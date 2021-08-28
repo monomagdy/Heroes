@@ -58,12 +58,12 @@ export class AppComponent implements OnInit {
     const EmailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
     const PhonePattern = '[- +()0-9]+';
     this.FiltersForm = this.formBuilder.group({
-      email: ['', [ Validators.pattern(EmailPattern)]],
+      email: ['', [Validators.pattern(EmailPattern)]],
       name: [''],
-      phone:['', [Validators.pattern(PhonePattern)]],
+      phone: ['', [Validators.pattern(PhonePattern)]],
       company: [''],
       country: [null],
-      date:  [''],
+      date: [''],
     });
   }
 
@@ -83,14 +83,44 @@ export class AppComponent implements OnInit {
     });
   }
 
- //Search function 
+  //Search function 
   applySearch(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  filterClicked(){
-    var formValue = this.FiltersForm.value;
-  console.log(formValue);
+
+  resetForm(){
+    this.FiltersForm.reset();
+    this.getTableData();
+
+  }
+
+  FilterbyName(){
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+      return (
+        data.name.toString().includes(filter) 
+      );
+    };
+  }
+  filterClicked() {
+   if (this.FiltersForm.controls.name.value!=null){
+      this.router.navigate(
+        ['filter/'],
+        { queryParams: { name: this.FiltersForm.controls.name.value }, queryParamsHandling: 'merge' },
+        )
+        const filterValue = this.FiltersForm.controls.name.value 
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+     
+    /* var formValue = this.FiltersForm.value;
+    var formValueJSON = JSON.stringify(formValue);
+    this.router.navigate(
+      ['filter/'],
+      { queryParams: { name: formValueJSON }, queryParamsHandling: 'merge' },
+    )
+    const filterValue = formValueJSON;
+    
+    this.dataSource.filter = filterValue.trim().toLowerCase();*/
   }
 
 }

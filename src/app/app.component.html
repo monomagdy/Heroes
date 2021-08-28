@@ -1,5 +1,8 @@
 <div class="float-left filter col-3 slide-in white-bg p-0 mt-3 mb-3" *ngIf="isExpanded">
-  <h1 class="p-5">FILTERS</h1>
+ <button class="btn btn-default text-info float-right" (click)="resetForm()">
+    <mat-icon class="p-2 h6">clear</mat-icon>
+ </button> <h1 class="p-5">FILTERS</h1>
+  
   <form [formGroup]="FiltersForm" (keydown.enter)="$event.preventDefault()" class="p-3">
     <div class="form-group">
       <input type="text" formControlName="email" class="form-control" id="email" placeholder="Email">
@@ -26,7 +29,7 @@
         <option [ngValue]=null selected>
           Select Country
         </option>
-        <option *ngFor="let country of countries" [ngValue]="country.Alpha3Code">
+        <option *ngFor="let country of countries" [ngValue]="country.Name">
           {{country.Name}}
         </option>
       </select>
@@ -42,11 +45,12 @@
       <button class="btn btn-primary pl-2 pr-4" (click)="filterClicked()">Filter
         <mat-icon matSuffix aria-hidden="false" aria-label="icon" class="float-left ml-2 mr-2">filter_list</mat-icon>
       </button>
+     
     </div>
   </form>
 </div>
-<div class="float-right table-container white-bg p-0 mr-3 mt-3 mb-3"
-  [ngClass]="{'col-12': !isExpanded,'col-9':isExpanded }">
+<div class="table-container white-bg p-0 mr-3 mt-3 mb-3"
+  [ngClass]="{'col-12': !isExpanded,'col-9 float-right':isExpanded }">
   <div>
     <h3 class="border-right d-inline-block m-0 p-3 col-2">Heroes</h3>
     <button class="btn float-right m-2" (click)="toggleFilters()">
@@ -57,7 +61,12 @@
       <mat-icon matSuffix class="search-icon">search</mat-icon>
     </mat-form-field>
   </div>
-  <table mat-table [dataSource]="dataSource" matSort appNgMatTableQueryReflector class="table-bordered">
+  <div *ngIf="dataSource.filteredData.length===0" class="text-center m-5">
+    <mat-icon class="d-block m-auto text-warning h1">report</mat-icon>
+    <h3 class="mt-4">Sorry! there's no data matching your filters.</h3>
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort appNgMatTableQueryReflector class="table-bordered" 
+  [hidden]="dataSource.filteredData.length === 0">
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
