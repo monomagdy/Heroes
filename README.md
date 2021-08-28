@@ -1,4 +1,4 @@
-# Missing tasks:
+# Missing:
 1- filter section only filter by name input
 2- filters are not saved on refresh
 
