@@ -86,7 +86,7 @@
     <!-- Date Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef> Date </th>
-      <td mat-cell *matCellDef="let hero"> {{hero.date | date :'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let hero"> {{hero.date | date :'MMM dd, yyyy'}} </td>
     </ng-container>
     <!-- Country Column -->
     <ng-container matColumnDef="country">
