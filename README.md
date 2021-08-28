@@ -1,6 +1,7 @@
 # Missing:
 1- filter section only filter by name input
 2- filters are not saved on refresh
+3- use two componenets for table and filter instead of one for all 
 
 # Heroes
 
