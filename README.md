@@ -1,3 +1,7 @@
+# Missing tasks:
+1- filter section only filter by name input
+2- filters are not saved on refresh
+
 # Heroes
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
