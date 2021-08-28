@@ -15,46 +15,64 @@
     text-align: center;
     border-bottom: 3px solid #d8d9d9;
   }
-  .form-group button mat-icon{vertical-align: middle;}
+
+  .mat-datepicker-toggle {
+    position: absolute;
+    left: -40px;
+    top: -25px;
+    z-index: 10;
+    color: #222;
+    font-size: 25px;
+  }
+  .form-group button mat-icon {
+    vertical-align: middle;
+  }
 }
-.margin-start--20-imp {
-  margin: -20px;
-}
+
 .table-container {
+  transition: width 1s ease-in-out 1s;
+  .search-icon {
+    position: absolute;
+    left: -25px;
+    top: -12px;
+  }
   table {
     width: inherit;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   }
-}
-.search-icon {
-  position: absolute;
-  left: -25px;
-  top: -12px;
-}
+  .mat-table {
+    background: #fff;
+    // font-family: 'IBM Plex Mono', monospace;
 
-.mat-table {
-  background: #fff;
-  // font-family: 'IBM Plex Mono', monospace;
-}
-.mat-header-cell {
-  background: #f6f6f6;
-}
-.mat-header-cell,
-.mat-cell,
-.mat-footer-cell {
-  color: #222;
-  border-bottom: 1px solid #eee !important;
-  font-family: "IBM Plex Mono", monospace;
-  padding-left: 15px;
-}
+    tr.mat-header-row {
+      height: 45px;
+    }
 
-.mat-datepicker-toggle {
-  position: absolute;
-  left: -40px;
-  top: -25px;
-  z-index: 10;
-  color: #222;
-  font-size: 25px;
+    tr.mat-row,
+    tr.mat-footer-row {
+      height: 42px;
+    }
+    .mat-header-cell {
+      background: #f6f6f6;
+    }
+    .mat-header-cell,
+    .mat-cell,
+    .mat-footer-cell {
+      border-bottom: 1px solid #eee !important;
+      font-family: "IBM Plex Mono", monospace;
+      padding-left: 15px;
+      font-weight: 500;
+      color: #636262;
+    }
+  }
+}
+//general classes
+.m-0-imp {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.margin-start--20-imp {
+  margin: -20px;
 }
 //colors classses
 .white-bg {
@@ -63,17 +81,21 @@
 .blue-bg {
   background-color: #007aff;
 }
-.color-link {
+.blue-color {
   color: #007aff;
-  text-decoration: underline;
 }
+.color-link {
+  color: #007aff !important;
+  text-decoration: underline !important;
+}
+//overrride vendors
 .form-control {
   border: 0;
   border-bottom: 2px solid #eceef1;
   border-radius: 0;
   font-family: "Roboto", sans-serif;
   &:focus {
-    border-bottom: 2px solid #007aff;
+    border-bottom: 3px solid #007aff;
     outline: 0;
     box-shadow: none;
   }
@@ -83,6 +105,7 @@ button:focus {
   border: 0;
   box-shadow: none !important;
 }
+
 //animation
 .fade-in {
   animation: fadeIn 1s;

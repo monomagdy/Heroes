@@ -49,15 +49,15 @@
     </div>
   </form>
 </div>
-<div class="table-container white-bg p-0 mr-3 mt-3 mb-3"
+<div class="table-container white-bg p-0 mr-3 mt-3 mb-3 fade-in"
   [ngClass]="{'col-12': !isExpanded,'col-9 float-right':isExpanded }">
   <div>
-    <h3 class="border-right d-inline-block m-0 p-3 col-2">Heroes</h3>
-    <button class="btn float-right m-2" (click)="toggleFilters()">
+    <h3 class="border-right d-inline-block m-0 py-3 col-2">Heroes</h3>
+    <button class="btn float-right m-0 col-1 mt-2" (click)="toggleFilters()" title="Toggle Filters Section">
       <mat-icon aria-hidden="false" aria-label="icon">filter_list</mat-icon>
     </button>
-    <mat-form-field appearance="legacy" class="mt-2 border-0 col-6 float-right">
-      <input matInput class="form-control" (keyup)="applySearch($event)" >
+    <mat-form-field appearance="legacy" class="my-2 m-0-imp border-0 col-9 float-right">
+      <input matInput class="form-control text-center" (keyup)="applySearch($event)" >
       <mat-icon matSuffix class="search-icon">search</mat-icon>
     </mat-form-field>
   </div>
