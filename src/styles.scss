@@ -19,3 +19,10 @@ body { margin: 0; background-color: #eceef1 }
 .mat-calendar-body-cell:hover .mat-calendar-body-cell-content, .mat-calendar-body-today {
     background: #007bff!important;
 }
+.mat-paginator {
+  background: #0080ff;
+}
+button.mat-mini-fab.mat-custom-page:disabled {
+  color: #a19898;
+  cursor: not-allowed;
+}

@@ -23,7 +23,7 @@ export interface IResponseModel {
     data:any;
     Response: object[];
   }
-  export interface Ihero {
+  export interface ITable {
     name: string;
     phone:string;
     email: string;

@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from "@angular/forms";
-import { Icountry, Ihero } from './interfaces';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
+import { Icountry, ITable } from './interfaces';
 import { HeoresService } from './services/heoresService';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +17,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'Heroes';
   FiltersForm!: FormGroup;
+  @ViewChild(MatPaginator, { static: true })
+  paginator!: MatPaginator;
+
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
-  public dataSource = new MatTableDataSource<Ihero>();
+  public dataSource = new MatTableDataSource<ITable>();
   //for sorting
   public dataSourcelength = 0;
-  public retrivedData!: Ihero[];
+  public retrivedData!: ITable[];
   isExpanded: boolean = true;
   countries!: Icountry[];
   displayedColumns: string[] = ['name', 'phone', 'email', 'date', 'country', 'company'];
@@ -42,12 +46,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Ihero>();
+    this.dataSource = new MatTableDataSource<ITable>();
     this.initForm();
     this.getCountryList();
     this.getTableData();
   }
 
+  ngAfterViewChecked() {
+    const list = document.getElementsByClassName('mat-paginator-range-label');
+   // list[0].innerHTML = 'Page: ' + this.page.toString();
+}
 
   //toggle filters div
   toggleFilters() {
@@ -65,7 +73,7 @@ export class AppComponent implements OnInit {
 
   //intiate form
   initForm() {
-    const EmailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+    const EmailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
     const PhonePattern = '[- +()0-9]+';
     this.activatedRoute.queryParams.subscribe(queryParams => {
       const queryExist = queryParams && Object.keys(queryParams).length;
@@ -83,12 +91,13 @@ export class AppComponent implements OnInit {
 
   //get table data
   getTableData() {
-    this.HeroService.getHeroList().subscribe(res => {
+    this.HeroService.getDataList().subscribe(res => {
       if (res.IsSuccess) {
-        this.retrivedData = res.Response as Ihero[];
-        this.dataSource = new MatTableDataSource<Ihero>(this.retrivedData);
+        this.retrivedData = res.Response as ITable[];
+        this.dataSource = new MatTableDataSource<ITable>(this.retrivedData);
         //sorting
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
         const sortState: Sort = { active: 'name', direction: 'asc' };
         this.sort.active = sortState.active;
         this.sort.direction = sortState.direction;
@@ -98,6 +107,7 @@ export class AppComponent implements OnInit {
   }
 
   //Search function 
+  // tslint:disable-next-line: typedef
   applySearch(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

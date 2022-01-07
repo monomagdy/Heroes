@@ -16,12 +16,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { StylePaginatorDirective } from './style-paginator.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NgMatTableQueryReflectorDirective,
+    StylePaginatorDirective,
   ],
   imports: [
     BrowserModule,
