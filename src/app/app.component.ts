@@ -1,7 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Icountry, ITable } from './interfaces';
 import { HeoresService } from './services/heoresService';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -12,38 +18,46 @@ import { MatPaginator } from '@angular/material/paginator';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-
 })
 export class AppComponent implements OnInit {
-  title = 'Heroes';
+  title = 'Table';
   FiltersForm!: FormGroup;
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
+  myFilter: any;
 
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
   public dataSource = new MatTableDataSource<ITable>();
-  //for sorting
+  // for sorting
   public dataSourcelength = 0;
   public retrivedData!: ITable[];
   isExpanded: boolean = true;
   countries!: Icountry[];
-  displayedColumns: string[] = ['name', 'phone', 'email', 'date', 'country', 'company'];
+  displayedColumns: string[] = [
+    'name',
+    'phone',
+    'email',
+    'date',
+    'country',
+    'company',
+  ];
   filterValues = {
+    Searchby: '',
     name: '',
     phone: '',
     email: '',
     date: '',
     country: '',
-    company: ''
+    company: '',
   };
-  constructor(private formBuilder: FormBuilder,
+
+  constructor(
+    private formBuilder: FormBuilder,
     private HeroService: HeoresService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
-
-
-  }
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<ITable>();
@@ -51,47 +65,63 @@ export class AppComponent implements OnInit {
     this.getCountryList();
     this.getTableData();
   }
+  // tslint:disable: typedef
 
   ngAfterViewChecked() {
     const list = document.getElementsByClassName('mat-paginator-range-label');
-   // list[0].innerHTML = 'Page: ' + this.page.toString();
-}
+    // list[0].innerHTML = 'Page: ' + this.page.toString();
+  }
 
-  //toggle filters div
+  // toggle filters div
   toggleFilters() {
     this.isExpanded = !this.isExpanded;
   }
 
-  //get county list for ddl
+  // get county list for ddl
   getCountryList() {
-    this.HeroService.getCountries().subscribe(res => {
+    this.HeroService.getCountries().subscribe((res) => {
       if (res.IsSuccess) {
-        this.countries = res.Response as Icountry[]
+        this.countries = res.Response as Icountry[];
       }
     });
   }
 
-  //intiate form
+  // intiate form
   initForm() {
     const EmailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
     const PhonePattern = '[- +()0-9]+';
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
       const queryExist = queryParams && Object.keys(queryParams).length;
       this.FiltersForm = this.formBuilder.group({
-        email: [queryExist ? queryParams.email : '', [Validators.pattern(EmailPattern)]],
+        Searchby: [queryExist ? queryParams.name : ''],
+        email: [
+          queryExist ? queryParams.email : '',
+          [Validators.pattern(EmailPattern)],
+        ],
         name: [queryExist ? queryParams.name : ''],
-        phone: [queryExist ? queryParams.phone : '', [Validators.pattern(PhonePattern)]],
+        phone: [
+          queryExist ? queryParams.phone : '',
+          [Validators.pattern(PhonePattern)],
+        ],
         company: [queryExist ? queryParams.company : ''],
         country: [queryExist ? queryParams.country : null],
         date: [queryExist ? queryParams.date : ''],
       });
-
-    })
+    });
   }
 
-  //get table data
+  // watch for filterby value change
+  SearchByChange() {
+    this.FiltersForm.controls.Searchby.valueChanges.subscribe(value => {
+      this.FiltersForm.controls.Searchby.setValue(value);
+      this.myFilter = value;
+
+    });
+  }
+  // get table data
+  // tslint:disable: typedef
   getTableData() {
-    this.HeroService.getDataList().subscribe(res => {
+    this.HeroService.getDataList().subscribe((res) => {
       if (res.IsSuccess) {
         this.retrivedData = res.Response as ITable[];
         this.dataSource = new MatTableDataSource<ITable>(this.retrivedData);
@@ -106,8 +136,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  //Search function 
-  // tslint:disable-next-line: typedef
+  // Search function
   applySearch(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -117,39 +146,24 @@ export class AppComponent implements OnInit {
     this.FiltersForm.reset();
     this.getTableData();
     this.router.navigateByUrl('');
-
   }
-
 
   applyFilters() {
-
     if (this.FiltersForm.value != null) {
-
-      this.router.navigate(
-        ['filter/'],
-        { queryParams: { ...this.FiltersForm.value }, queryParamsHandling: 'merge' },
-      )
-
-      this.filterValues['name'] = this.FiltersForm.controls.name.value;
-      this.filterValues['phone'] = this.FiltersForm.controls.phone.value;
-      this.filterValues['email'] = this.FiltersForm.controls.email.value;
-      this.filterValues['date'] = this.FiltersForm.controls.date.value;
-      this.filterValues['country'] = this.FiltersForm.controls.country.value;
-      this.filterValues['company'] = this.FiltersForm.controls.company.value;
-
-      this.dataSource.filter = JSON.stringify(this.filterValues)
+      /*this.router.navigate(['filter/'], {
+        queryParams: { ...this.FiltersForm.value },
+        queryParamsHandling: 'merge',
+      });*/
+      this.filterValues.name = this.FiltersForm.controls.name.value;
+      this.filterValues.phone = this.FiltersForm.controls.phone.value;
+      this.filterValues.email = this.FiltersForm.controls.email.value;
+      this.filterValues.date = this.FiltersForm.controls.date.value;
+      this.filterValues.country = this.FiltersForm.controls.country.value;
+      this.filterValues.company = this.FiltersForm.controls.company.value;
+      //this.filterValues = this.myFilter;
+      this.dataSource.filter = JSON.stringify(this.filterValues);
       const filterValue = this.FiltersForm.controls.name.value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
-
-
-
-
     }
-
-
   }
 }
-
-
-
-

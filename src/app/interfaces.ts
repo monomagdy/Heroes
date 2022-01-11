@@ -31,3 +31,7 @@ export interface IResponseModel {
     country:string;
     company:string;
   }
+  export interface ITableFilter {
+    column: string;
+    value: any;
+  }
